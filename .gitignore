@@ -112,3 +112,4 @@ obj/
 
 # VS Code cache
 .vscode
+appsettings.Local.json
