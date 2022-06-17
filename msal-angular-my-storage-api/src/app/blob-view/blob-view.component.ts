@@ -30,7 +30,7 @@ export class BlobViewComponent implements OnInit {
       });
   }
 
-  public postBlob(blob: MyBlob): void {
+  postBlob(blob: MyBlob): void {
     this.service.postBlob(blob).subscribe(response =>
     {
       let fileName = response.headers.get('content-disposition')
