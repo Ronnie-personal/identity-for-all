@@ -1,0 +1,23 @@
+<mat-toolbar color="primary">
+  <a class="title" href="/">{{ title }}</a>
+
+  <div class="toolbar-spacer"></div>
+
+  <a mat-button [routerLink]="['blob-view']">BlobList</a>
+
+  <button mat-raised-button *ngIf="!loginDisplay" (click)="login()">Login</button>
+  <button mat-raised-button *ngIf="loginDisplay" (click)="logout()">Logout</button>  
+
+</mat-toolbar>
+<div class="container">
+  <!--This is to avoid reload during acquireTokenSilent() because of hidden iframe -->
+  <router-outlet *ngIf="!isIframe"></router-outlet>
+</div>
+
+<footer *ngIf="loginDisplay">
+  <mat-toolbar>
+    <div class="footer-text">
+     This site is created for <a href="https://techcommunity.microsoft.com/t5/security-compliance-and-identity/new-blog-post-identity-for-all-hackathon-is-here-come-innovate/m-p/3423628" target="_blank"> Identity for All Hakathon</a>
+    </div>
+  </mat-toolbar>
+</footer>

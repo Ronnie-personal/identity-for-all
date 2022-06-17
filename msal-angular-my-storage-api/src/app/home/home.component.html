@@ -1,0 +1,8 @@
+<div *ngIf="!loginDisplay">
+    <p>Please sign-in to work with Azure blob files</p>
+</div>
+
+<div *ngIf="loginDisplay">
+    <p>Login successful!</p>
+    <p>List Azure blob files by clicking BlobList above.</p>
+</div>

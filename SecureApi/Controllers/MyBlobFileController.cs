@@ -5,6 +5,7 @@ using Azure.Identity;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Microsoft.Extensions.Configuration;
+using System.Text;
 
 namespace SecureApi.Controllers;
 
@@ -49,9 +50,10 @@ public class MyBlobFileController : ControllerBase
         BlobContainerClient blobContainerClient =
             new BlobContainerClient(new Uri(Uri), credential);
         BlobClient blobClient = blobContainerClient.GetBlobClient(blobFile.BlobFile);
-        string downloadFilePath = "./" + blobFile.BlobFile.Replace(".txt", ".DOWNLOADED.txt");
-        await blobClient.DownloadToAsync(downloadFilePath);
-
-        return Ok(blobFile);
+        string downloadFileName = blobFile.BlobFile.Replace(".txt", ".DOWNLOADED.txt");
+       
+        BlobDownloadResult downloadResult = await blobClient.DownloadContentAsync();
+        var downloadedData = Encoding.UTF8.GetBytes(downloadResult.Content.ToString());
+        return File(downloadedData, "text/csv", downloadFileName);
     }    
 }
