@@ -18,3 +18,4 @@ https://cloudjourney.medium.com/file-collaboration-4ef397f3f176
 For buidling IaaS or PaaS based file colloboration capability, please refer to my blogs for more detail.  
 https://cloudjourney.medium.com/azure-storage-aad-authentication-f2eb48e481f0  
 https://cloudjourney.medium.com/secure-azure-storage-api-16cf87dd39a6  
+https://cloudjourney.medium.com/sing-in-users-and-azure-storage-api-3b7ee7dc5e7b  
