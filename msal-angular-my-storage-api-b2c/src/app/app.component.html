@@ -1,0 +1,27 @@
+<mat-toolbar color="accent">
+   <a class="title"  href="/">{{ title }}</a>
+</mat-toolbar>
+
+<mat-toolbar color="primary">
+
+  <!-- <div class="toolbar-spacer"></div>  -->
+  
+  <button mat-raised-button *ngIf="!loginDisplay" (click)="login()">Login</button>
+  <button mat-raised-button color="accent" *ngIf="loginDisplay" (click)="logout()">Logout</button>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <button mat-button *ngIf="loginDisplay" (click)="editProfile()">Edit Profile</button>
+  <a mat-button [routerLink]="['blob-view']">List Azure Blob</a>
+
+</mat-toolbar>
+<div class="container">
+  <!--This is to avoid reload during acquireTokenSilent() because of hidden iframe -->
+  <router-outlet *ngIf="!isIframe"></router-outlet>
+</div>
+
+<footer>
+  <mat-toolbar>
+    <div>
+     This site is created using C# .NET Core 6 and Angular 14, all code is available from <a href="https://github.com/Ronnie-personal/identity-for-all" target="_blank">My Github Repo</a>
+    </div>
+  </mat-toolbar>
+</footer>
