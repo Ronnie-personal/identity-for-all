@@ -1,0 +1,26 @@
+.mat-table {
+    width: 20%;
+    text-indent: 15px;
+    margin-left: 275px;
+    font-size: small;
+}
+
+.mat-card {
+    text-align: left;
+    line-height: 300%;
+    text-indent: 20%;
+    list-style-type: square;    
+}
+
+.bullet-text {
+    color: rgb(151, 39, 123) ;
+    text-align: left !important;
+  }
+
+li {
+    list-style-type: circle;
+}
+
+li::marker {
+    color: purple;
+}

@@ -1,0 +1,31 @@
+.toolbar-spacer {
+    flex: 1 1 auto;
+  }
+
+  a.title {
+    color: darkorchid;
+    text-indent: 100px;
+  }
+
+  a {
+    margin-right: 10px;
+  }
+
+  .footer-text {
+    font-size: large;
+    text-align: center;
+    color: darkcyan;
+  }
+
+  .mat-button {
+    font-size: large;
+  }
+
+  .mat-raised-button {
+    font-size: large;
+  }
+
+  .bullet-text {
+    color: darkblue !important;
+    text-align: left !important;
+  } 

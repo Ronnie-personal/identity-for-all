@@ -1,0 +1,25 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.container { margin: 1%; }
+.mat-button:hover {color: darkmagenta; background: lightgoldenrodyellow;}
+footer{
+    position:fixed;
+    bottom:80px;
+    background-color:pink;
+    width:100%;
+    text-indent: 250px;
+    color: red;
+    }
+.card-section {
+    max-width: 50%;
+    text-align: center;
+    margin-left:10%;
+    margin-top: 5%;
+}    
+.mat-card-custom
+{
+color: darkblue;
+    }

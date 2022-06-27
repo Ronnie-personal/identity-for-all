@@ -1,0 +1,31 @@
+<mat-toolbar color="accent">
+   <a class="title" [routerLink]="['']">{{ title }}</a>
+</mat-toolbar>
+
+<mat-toolbar color="primary">
+
+  <!-- <div class="toolbar-spacer"></div>  -->
+  
+  <button mat-raised-button *ngIf="!loginDisplay" (click)="login()">Login</button>
+  <button mat-raised-button color="accent" *ngIf="loginDisplay" (click)="logout()">Logout</button>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a mat-button [routerLink]="['blob-view']">List Azure Blob</a>
+  <a mat-button *ngIf="loginDisplay" [routerLink]="['']">Show Profile</a>
+  <button mat-button *ngIf="loginDisplay" (click)="editProfile()">Edit Profile</button>  
+  <div class="toolbar-spacer"></div> 
+  <a mat-button *ngIf="loginDisplay" color="warn" [routerLink]="['close-account']">Close Account</a>   
+
+</mat-toolbar>
+<div class="container">
+  <!--This is to avoid reload during acquireTokenSilent() because of hidden iframe -->
+  <router-outlet *ngIf="!isIframe"></router-outlet>
+</div>
+
+<footer>
+  <mat-toolbar>
+    <div class="footer-text">
+     This site is built using C# .NET core 6 and Angular 14, runs in Azure app service, funcation app and storage account. All code is available from <a href="https://github.com/Ronnie-personal/identity-for-all" target="_blank">My Github Repo</a>
+    </div>
+  </mat-toolbar>
+</footer>
+<router-outlet></router-outlet>
