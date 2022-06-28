@@ -12,6 +12,8 @@ Secured file collaboration with external user using Azure AD B2C, Microsoft Grap
 - Showing B2C User Profile through Microsoft Graph API
 - B2C User Deletion through Microsoft Graph API  
 
+![Overview](https://github.com/Ronnie-personal/identity-for-all/blob/main/ReadmeFiles/fcollab-b2c.png?raw=true)  
+
 ![Overview](https://github.com/Ronnie-personal/identity-for-all/blob/main/ReadmeFiles/fcollab-features.png?raw=true)
 
 ## How we built it
