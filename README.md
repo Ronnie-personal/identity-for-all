@@ -55,7 +55,7 @@ https://cloudjourney.medium.com/file-collaboration-4ef397f3f176
 - Protect API with Azure AD or Azure AD B2C  
 - Sign in/up user from Angualr SPA with MSAL  
 - Read Azure Blob and return to API client  
-- From Angular download file  
+- Download file from Angular  
 - UI design
 
 ## What's next for File Collaboration and Microsoft Identity Platform  
