@@ -7,13 +7,16 @@ The file sharing must be secured with authentication and authorization and can n
 ## What technology to use? SaaS or Buidling Your Own?
 Let's explore both!
 
-For SharePoint experiment, please refer to my blog post:  
-https://cloudjourney.medium.com/file-collaboration-4ef397f3f176
+For developing your own, complete code stack is available from  
+https://github.com/Ronnie-personal/identity-for-all/tree/main/B2C  
 
-For developing your own, please refer to following blog posts for more detail:
+please refer to following blog posts for more design and implementation details:  
 
 https://cloudjourney.medium.com/file-collaboration-and-ms-identity-platform-826455764079  
 https://cloudjourney.medium.com/msal-2-and-azure-ad-b2c-4873d264b094  
 https://cloudjourney.medium.com/azure-storage-aad-authentication-f2eb48e481f0    
 https://cloudjourney.medium.com/secure-azure-storage-api-16cf87dd39a6    
 https://cloudjourney.medium.com/sing-in-users-and-azure-storage-api-3b7ee7dc5e7b  
+
+For SharePoint online experiment, please refer to my blog post:  
+https://cloudjourney.medium.com/file-collaboration-4ef397f3f176
