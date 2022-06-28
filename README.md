@@ -1,14 +1,33 @@
-# file-colloboration
-## Project Requirement:
+## Inspiration
+Identity for all hackathon is a great event, it inspires me to learn and go to next level.
+
 Here is the hypothetical use case, individuals who are outside of your organization need to do file collaboration with you. For example, download document or photos through user friendly web UI.
 
 The file sharing must be secured with authentication and authorization and can not be anonymous. The capability should be highly scalable and customizable with either local account or federation with user’s existing social identity.
+## What it does
+Secured file collaboration with external user using Azure AD B2C, Microsoft Graph and managed identity, running in Azure cloud, highly scalable and customizable.
+- Sign-in, Sign-up or Editing Profile through Azure AD B2C
+- Azure AD B2C Integration with Google reCAPTCHA
+- Managed Identity for Accessing Azure Blob Files        
+- Showing B2C User Profile through Microsoft Graph API
+- B2C User Deletion through Microsoft Graph API  
 
-## What technology to use? SaaS or Buidling Your Own?
-Let's explore both!
+![Overview](https://github.com/Ronnie-personal/identity-for-all/blob/main/ReadmeFiles/fcollab-features.png?raw=true)
 
-For developing your own, complete code stack is available from  
-https://github.com/Ronnie-personal/identity-for-all/tree/main/B2C  
+## How we built it
+I started from very basic and gradually added more feature enhancment:  
+- A console app to work Auzre storage account authentication and managed idenity
+- Convert the console app to .NET API  
+- Developed sign in user SPA code with MSAL for Angular using AAD  
+- Create Azure AD B2C and user flow configuration  
+- Convert both API and SPA code to work with Azure AD B2C 
+- Test and debug code from visual studio and visual studio code    
+- Deploy API to Azure app service  
+- Deploy SPA to Azure storage static website  
+- Create Azure storage to host document and photos  
+- Deploy reCAPTCHA integration code to Azure function
+
+![Overview](https://github.com/Ronnie-personal/identity-for-all/blob/main/ReadmeFiles/fcollab-architecture.png?raw=true)
 
 please refer to following blog posts for more design and implementation details:  
 
@@ -20,3 +39,25 @@ https://cloudjourney.medium.com/sing-in-users-and-azure-storage-api-3b7ee7dc5e7b
 
 For SharePoint online experiment, please refer to my blog post:  
 https://cloudjourney.medium.com/file-collaboration-4ef397f3f176
+
+## Challenges we ran into
+- Coding detail is a challenge to me, since I don't do coding in my day to day job. I need to quickly refresh my memory and complete this full stack coding mission. Microsoft provides so many sample code in git hub, that is extremly helpful and I'm able to get started on both Anuglar and .NET API coding!  
+- I also have doubt when I work on Azure AD B2C user managment through Microsfot graph API, MS consultant pointed out a git hub sample code, which is exactly what I was looking for.
+
+## Accomplishments that we're proud of
+- I have better understaning of MS identity platform
+- I can call myself full stack devloper again after this project  
+- Host the capability in Azure cloud with approapriate network and IAM security control
+
+## What we learned
+- Azure AD B2C sign-in, sign-up, edit profile, API connector, federation with social identity provider and custom page layout  
+- List or delete user porifle through Microsoft Graph API
+- Protect API with Azure AD or Azure AD B2C  
+- Sign in/up user from Angualr SPA with MSAL  
+- Read Azure Blob and return to API client  
+- From Angular download file  
+- UI design
+
+## What's next for File Collaboration and Microsoft Identity Platform  
+Hakathon project is over soon, but my learing journey will continue.  
+I plan to explore more about Microsoft identity platform, incoorpate new feautres into this code stack.
