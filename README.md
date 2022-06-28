@@ -29,7 +29,7 @@ I started from very basic and gradually added more feature enhancement:
 
 ![Overview](https://github.com/Ronnie-personal/identity-for-all/blob/main/ReadmeFiles/fcollab-architecture.png?raw=true)
 
-please refer to following blog posts for more design and implementation details:  
+Please refer to following blog posts for more design and implementation details:  
 
 https://cloudjourney.medium.com/file-collaboration-and-ms-identity-platform-826455764079  
 https://cloudjourney.medium.com/msal-2-and-azure-ad-b2c-4873d264b094  
