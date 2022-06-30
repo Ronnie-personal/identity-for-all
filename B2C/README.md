@@ -2,7 +2,7 @@
 # File Collaboration and Microsoft Idenity Platform Project
 
  1. [Overview](#overview)
- 1. [Scenario](#scenario)
+ 1. [Architecture Design](#architecture-design)
  1. [Contents](#contents)
  1. [Prerequisites](#prerequisites)
  1. [Setup](#setup)
@@ -84,13 +84,6 @@ For more information and potential issues, see: [HTTPS in .NET Core](https://doc
     npm install
 ```
 
-### Step 5. Captcha integration and custom page layout
-
-- Create Azure storage account to host custom page.  
-- Deploy Azure function app to integrate with Azure AD B2C API connector, when run from local, add settings to local.settings.json, when run from Azure function app, use funcation app app settings.
-
-  For more information see: [deployment](https://github.com/Azure-Samples/active-directory-b2c-node-sign-up-user-flow-captcha).  
-
 ### Step 6. Create storage account to host document and photos  
 - Create Azure storage account and container, for more information see: [Create storage account](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&tabs=azure-portal)  
 - Disable public access, for more information see: [Disable public access](https://docs.microsoft.com/en-us/azure/storage/common/shared-key-authorization-prevent?tabs=portal#remediate-authorization-via-shared-key)  
@@ -99,6 +92,8 @@ For more information and potential issues, see: [HTTPS in .NET Core](https://doc
 ```
 New-AzRoleAssignment -RoleDefinitionName "Storage Blob Data Reader" -ObjectId <your user account OID> -Scope <Resource ID>
 ```
+
+## Registration
 
 ### Choose the Azure AD tenant where you want to create your applications
 
@@ -197,19 +192,36 @@ Open the project in your IDE (like Visual Studio or Visual Studio Code) to confi
 > In the steps below, "ClientID" is the same as "Application ID" or "AppId".
 
 1. Open the `SPA\src\app\auth-config.ts` file.
-1. Find the key `clientId` and replace the existing value with the application ID (clientId) of `msal-angular-spa` app copied from the Azure portal.
+1. Find the key `Configuration.auth.clientId` and replace the existing value with the application ID (clientId) of `msal-angular-spa` app copied from the Azure portal.
+1. Find the key `Configuration.auth.redirectUri` and replace the existing value with your SPA home page URL, for example `http://localhost:4200`.
 1. Find the key `protectedResources.MyStorageApi.scopes` and replace the existing value with the scope of the web API that you have just exposed during the web API registration steps, for example `[https://{tenantName}.onmicrosoft.com/{service_clientId}/read, https://{tenantName}.onmicrosoft.com/{service_clientId}/write]`  
 1. Find the key `protectedResources.MyProfileApi.scopes` and replace the existing value with the scope of the web API that you have just exposed during the web API registration steps, for example `[https://{tenantName}.onmicrosoft.com/{service_clientId}/profile.read, https://{tenantName}.onmicrosoft.com/{service_clientId}/profile.delete]`  
 
 To setup your B2C user-flows, do the following:
 
-1. Find the key `names` and populate it with your policy names e.g. `signUpSignIn`.
-1. Find the key `authorities` and populate it with your policy authority strings e.g. `https://<your-tenant-name>.b2clogin.com/<your-tenant-name>.onmicrosoft.com/b2c_1_signupsignin`.
-1. Find the key `names` and populate it with your policy names e.g. `editProfile`.
-1. Find the key `authorities` and populate it with your policy authority strings e.g. `https://<your-tenant-name>.b2clogin.com/<your-tenant-name>.onmicrosoft.com/b2c_1_editprofile`.  
+1. Find the key `b2cPolicies.names.signUpSignIn` and populate it with your policy names e.g. `B2C_1_signupsignin`.
+1. Find the key `b2cPolicies.names.editProfile` and populate it with your policy names e.g. `B2C_1_editprofile`.
+1. Find the key `authorities.signUpSignIn.authority` and populate it with your policy authority strings e.g. `https://<your-tenant-name>.b2clogin.com/<your-tenant-name>.onmicrosoft.com/b2c_1_signupsignin`.
+1. Find the key `authorities.editProfile.authority` and populate it with your policy authority strings e.g. `https://<your-tenant-name>.b2clogin.com/<your-tenant-name>.onmicrosoft.com/b2c_1_editprofile`.  
 1. Find the key `authorityDomain` and populate it with the domain portion of your authority string e.g. `<your-tenant-name>.b2clogin.com`.
 
-#### Registrati
+## Captcha integration and custom page layout
+
+1. Create Azure storage account to host custom page.  
+1. Deploy Azure function app to integrate with Azure AD B2C API connector, when run from local, add settings to local.settings.json, when run from Azure function app, use funcation app app settings.
+    - Find the key `BASIC_AUTH_USERNAME` and populate it with your arbitrary username e.g. `b2capiconnector`.  
+    - Find the key `BASIC_AUTH_PASSWORD` and populate it with your arbitrary password.  
+    - Find the key `CAPTCHA_SECRET_KEY` and populate it with your reCAPTCHA secret key, you get the key when create API key pair from Google reCAPTCHA v2.  
+    - Find the key `B2C_EXTENSIONS_APP_ID` and populate it with application id(client Id) of `b2c-extensions-app`, ensure to remove all the hyphons.  
+1. Add cutom attribute `CaptchaUserResponseToken` in Azure B2C.    
+1. New API connector from Azure AD B2C with basic auth, userid is the value from `BASIC_AUTH_USERNAME`, passowrd is the value from `BASIC_AUTH_PASSWORD`.      
+1. From Azure AD B2C `User flows` blade  
+    - Select your signupsignin flow
+    - In Overview page, select `Page layouts`  
+    - Update `Custom page URI` for both Local account sign up page and Socail account sign up page with your custom page URL e.g `https://<storage acct>.blob.core.windows.net/<container>/selfAsserted.html`  
+
+  For more information see: [deployment](https://github.com/Azure-Samples/active-directory-b2c-node-sign-up-user-flow-captcha).  
+
 ## Running the sample
 
 Using a command line interface such as VS Code integrated terminal, locate the application directory. Then:  
@@ -229,8 +241,8 @@ In a separate console window, execute the following commands:
 ## Explore the sample
 
 1. Open your browser and navigate to `http://localhost:4200`.
-2. Sign-in using the button on the top-right corner.
-3. Select the **TodoList** button on the navigation bar to access your todo list.
+2. Sign-in using the button on the top-left corner.
+3. Select the **List Azure Blob** button on the navigation bar to access shared document or photos.
 
 > :information_source: Did the sample not work for you as expected? Then please reach out to us using the [GitHub Issues](../../../../issues) page.
 
@@ -249,60 +261,61 @@ On the SPA side, clients should treat access tokens as opaque strings, as the co
 On the web API side, token validation is handled by [Microsoft.Identity.Web](https://github.com/AzureAD/microsoft-identity-web), using `JwtBearerDefaults.AuthenticationScheme`. Simply initialize `AddMicrosoftIdentityWebApi()` with your configuration and add `AddAuthorization()` to the service;
 
 ```csharp
-        public void ConfigureServices(IServiceCollection services)
-        {
-            // Setting configuration for protected web api
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddMicrosoftIdentityWebApi(Configuration);
+var builder = WebApplication.CreateBuilder(args);
 
-            // Creating policies that wraps the authorization requirements
-            services.AddAuthorization();
-        }
+// Add services to the container.
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAdB2C"));
 ```
 
 In your controller, add [Authorize] decorator, which will make sure all incoming requests have an authentication bearer:
 
 ```csharp
-    [Authorize]
-    [Route("api/[controller]")]
-    [ApiController]
-    public class TodoListController : ControllerBase
+[Authorize]
+[ApiController]
+[Route("[controller]")]
+[RequiredScope(RequiredScopesConfigurationKey = "AzureAdB2C:Scopes")]
+public class MyBlobFileController : ControllerBase
+{
+    private readonly ILogger<MyBlobFileController> _logger;
+    private readonly IConfiguration _configuration;
+    private string url;
+   
+    public MyBlobFileController(ILogger<MyBlobFileController> logger, IConfiguration configuration)
     {
-        // The Web API will only accept tokens 1) for users, and 
-        // 2) having the demo.read scope for this API
-        static readonly string[] scopeRequiredByApi = new string[] { "demo.read" };
-
-        private readonly TodoContext _context;
-
-        public TodoListController(TodoContext context)
-        {
-            _context = context;
-        }
-
-        // GET: api/TodoItems
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<TodoItem>>> GetTodoItems()
-        {
-            HttpContext.VerifyUserHasAnyAcceptedScope(scopeRequiredByApi);
-            string owner = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            return await _context.TodoItems.Where(item => item.Owner == owner).ToListAsync();
-        }
+        _logger = logger;
+        _configuration = configuration;
+        url = "https://" + _configuration.GetValue<string>("AzureStorage:AcctName") + ".blob.core.windows.net/" + _configuration.GetValue<string>("AzureStorage:ContainerName") + "/";
+    }
+[HttpGet(Name = "GetMyBlobFile")]
+    public async Task<ActionResult<IEnumerable<MyBlobFile>>> Get()
+    {
+        var credential = new DefaultAzureCredential();
+        var blobContainerClient =
+            new BlobContainerClient(new Uri(this.url), credential);
+        List<MyBlobFile> list = new List<MyBlobFile>();
         
-        // ...
+        await foreach (BlobItem blobItem in blobContainerClient.GetBlobsAsync())
+        {
+            list.Add(item: new MyBlobFile { BlobFile = blobItem.Name, LastModified = blobItem.Properties.LastModified });
+        }
+        return list.ToArray();
     }
 ```
 
 ### CORS configuration
 
-You need to set **CORS** policy to be able to call the **TodoListAPI** in [Startup.cs](./API/Startup.cs). For the purpose of this sample, we are setting it to allow *any* domain and methods. In production, you should modify this to allow only the domains and methods you designate.
+You need to set **CORS** policy to be able to call the **MyBlobFileAPI** in [Program.cs](./API/Program.cs). For the purpose of this sample, we are setting it to allow *any* domain and methods. In production, you should modify this to allow only the domains and methods you designate.
 
 ```csharp
-    services.AddCors(o => o.AddPolicy("default", builder =>
-    {
-        builder.AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader();
-    }));
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+                      policy  =>
+                      {
+                          policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().WithExposedHeaders("content-disposition");
+                      });
+}); 
 ```
 
 ### Debugging the sample
@@ -326,19 +339,3 @@ Learn more about using [.NET Core with Visual Studio Code](https://docs.microsof
 - [Use MSAL.js to work with Azure AD B2C](https://docs.microsoft.com/azure/active-directory/develop/msal-b2c-overview)
 
 For more information about how OAuth 2.0 protocols work in this scenario and other scenarios, see [Authentication Scenarios for Azure AD](https://docs.microsoft.com/azure/active-directory/develop/authentication-flows-app-scenarios).
-
-## Community Help and Support
-
-Use [Stack Overflow](http://stackoverflow.com/questions/tagged/msal) to get support from the community.
-Ask your questions on Stack Overflow first and browse existing issues to see if someone has asked your question before.
-Make sure that your questions or comments are tagged with [`azure-active-directory` `azure-ad-b2c` `ms-identity` `adal` `msal`].
-
-If you find a bug in the sample, raise the issue on [GitHub Issues](../../../../issues).
-
-To provide feedback on or suggest features for Azure Active Directory, visit [User Voice page](https://feedback.azure.com/forums/169401-azure-active-directory).
-
-## Contributing
-
-If you'd like to contribute to this sample, see [CONTRIBUTING.MD](/CONTRIBUTING.md).
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information, see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
