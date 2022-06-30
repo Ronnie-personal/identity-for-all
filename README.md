@@ -1,5 +1,5 @@
 ## Inspiration
-Identity for all hackathon is a great event, it inspires me to learn and go to next level.
+Identity for all hackathon is a great event, it inspires me to learn more and go to next level.
 
 Here is the hypothetical use case, individuals who are outside of your organization need to do file collaboration with you. For example, download document or photos through user friendly web UI.
 
