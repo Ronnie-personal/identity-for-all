@@ -86,11 +86,19 @@ For more information and potential issues, see: [HTTPS in .NET Core](https://doc
 
 ### Step 5. Captcha integration and custom page layout
 
-```console
-    Create Azure storage account to host custom page.
-    Deploy Azure function app to integrate with Azure AD B2C API connector, when run from local, add settings to local.settings.json, when run from Azure function app, use funcation app app settings.
+- Create Azure storage account to host custom page.  
+- Deploy Azure function app to integrate with Azure AD B2C API connector, when run from local, add settings to local.settings.json, when run from Azure function app, use funcation app app settings.
+
+  For more information see: [deployment](https://github.com/Azure-Samples/active-directory-b2c-node-sign-up-user-flow-captcha).  
+
+### Step 6. Create storage account to host document and photos  
+- Create Azure storage account and container, for more information see: [Create storage account](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&tabs=azure-portal)  
+- Disable public access, for more information see: [Disable public access](https://docs.microsoft.com/en-us/azure/storage/common/shared-key-authorization-prevent?tabs=portal#remediate-authorization-via-shared-key)  
+- Disable storage account access key, for more information see: [Disable storage account access key](https://docs.microsoft.com/en-us/azure/storage/blobs/anonymous-read-access-configure?tabs=portal#allow-or-disallow-public-read-access-for-a-storage-account)    
+- Grant RBAC permission to your API/Azure app service managed identity
 ```
-For more information see: [deployment](https://github.com/Azure-Samples/active-directory-b2c-node-sign-up-user-flow-captcha).  
+New-AzRoleAssignment -RoleDefinitionName "Storage Blob Data Reader" -ObjectId <your user account OID> -Scope <Resource ID>
+```
 
 ### Choose the Azure AD tenant where you want to create your applications
 
@@ -135,6 +143,8 @@ The first thing that we need to do is to declare the unique [resource](https://d
    - Click on **Save**.
 
 #### ConfClientGraph
+Create a single tenant app registration in Azure B2C tananet for the API to call Microsoft graph API, so that we can list user profile or delete user.  
+For more infomration see: [Register Management Application](https://docs.microsoft.com/en-us/azure/active-directory-b2c/microsoft-graph-get-started?tabs=app-reg-ga#register-management-application), it needs graph API  User.ReadWrite.All permission.  
 
 #### Configure the service app (msal-dotnet-api) to use your app registration
 
@@ -145,13 +155,21 @@ Open the project in your IDE (like Visual Studio or Visual Studio Code) to confi
 1. Open the `API\appsettings.json` file.
 1. Find the key `AzureAdB2C:Instance` and replace the existing value with your Azure AD B2C tenant name.
 1. Find the key `AzureADB2C:ClientId` and replace the existing value with the application ID (clientId) of `msal-dotnet-api` app copied from the Azure portal.
-1. Find the key `AzureADB2C:Domain` and replace the existing value with your Azure AD B2C tenant name.
+1. Find the key `AzureADB2C:Domain` and replace the existing value with your Azure AD B2C domain name.
 
-1. Find the key `SignUpSignInPolicyId` and replace the existing value with your sign-up/sign-in user-flow string e.g. `b2c_1_signupsignin`.
-1. Find the key `EditProfilePolicyId` and replace the existing value with your profile-edit user-flow string e.g. `b2c_1_editprofile`.
+1. Find the key `AzureADB2C:SignUpSignInPolicyId` and replace the existing value with your sign-up/sign-in user-flow string e.g. `b2c_1_signupsignin`.
+1. Find the key `AzureADB2C:EditProfilePolicyId` and replace the existing value with your profile-edit user-flow string e.g. `b2c_1_editprofile`.
 
-1. Open the `API\Controllers\TodoListController.cs` file.
-1. Find the variable `scopeRequiredByApi` and replace its value with the name of the API scope that you have just exposed (by default `demo.read`)
+1. Find the key `AzureADB2C:Scopes` and replace value with `read write`.
+1. Find the key `AzureADB2C:ProfileScopes` and replace its value with `profile.read profile.delete`.  
+
+1. Find the key `AzureStorage:AcctName` and replace value with your Azure storage account which hosts your document and photos.
+1. Find the key `AzureStorage:ContainerName` and replace its value with your storage account container.
+  
+1. Find the key `AzureAd:Domain` and replace value with your Azure AD B2C domain name.
+1. Find the key `AzureAd:TenantId` and replace its value with your Azure AD B2C tenant id.  
+1. Find the key `AzureAd:ClientId` and replace its value with the application ID(clientId) of `ConfClientGrap`.    
+1. Find the key `AzureAd:ClientId` and replace its value with the secret of app registration `ConfClientGrap`.  
 
 ### Register the client app (msal-angular-spa)
 
@@ -180,12 +198,15 @@ Open the project in your IDE (like Visual Studio or Visual Studio Code) to confi
 
 1. Open the `SPA\src\app\auth-config.ts` file.
 1. Find the key `clientId` and replace the existing value with the application ID (clientId) of `msal-angular-spa` app copied from the Azure portal.
-1. Find the key `protectedResources.todoListApi.scopes` and replace the existing value with the scope of the web API that you have just exposed during the web API registration steps, for example `https://{tenantName}.onmicrosoft.com/{service_clientId}/access_as_user`
+1. Find the key `protectedResources.MyStorageApi.scopes` and replace the existing value with the scope of the web API that you have just exposed during the web API registration steps, for example `[https://{tenantName}.onmicrosoft.com/{service_clientId}/read, https://{tenantName}.onmicrosoft.com/{service_clientId}/write]`  
+1. Find the key `protectedResources.MyProfileApi.scopes` and replace the existing value with the scope of the web API that you have just exposed during the web API registration steps, for example `[https://{tenantName}.onmicrosoft.com/{service_clientId}/profile.read, https://{tenantName}.onmicrosoft.com/{service_clientId}/profile.delete]`  
 
 To setup your B2C user-flows, do the following:
 
 1. Find the key `names` and populate it with your policy names e.g. `signUpSignIn`.
-1. Find the key `authorities` and populate it with your policy authority strings e.g. `https://<your-tenant-name>.b2clogin.com/<your-tenant-name>.onmicrosoft.com/b2c_1_susi`.
+1. Find the key `authorities` and populate it with your policy authority strings e.g. `https://<your-tenant-name>.b2clogin.com/<your-tenant-name>.onmicrosoft.com/b2c_1_signupsignin`.
+1. Find the key `names` and populate it with your policy names e.g. `editProfile`.
+1. Find the key `authorities` and populate it with your policy authority strings e.g. `https://<your-tenant-name>.b2clogin.com/<your-tenant-name>.onmicrosoft.com/b2c_1_editprofile`.  
 1. Find the key `authorityDomain` and populate it with the domain portion of your authority string e.g. `<your-tenant-name>.b2clogin.com`.
 
 #### Registrati
