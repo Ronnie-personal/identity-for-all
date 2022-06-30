@@ -7,19 +7,19 @@
  1. [Prerequisites](#prerequisites)
  1. [Setup](#setup)
  1. [Registration](#registration)
+ 1. [Captcha Integration and Custom Page Layout](#captcha-integration-and-custom-page-layout)  
  1. [Running the sample](#running-the-sample)
  1. [Explore the sample](#explore-the-sample)
  1. [About the code](#about-the-code)
  1. [More information](#more-information)
- 1. [Community Help and Support](#community-help-and-support)
- 1. [Contributing](#contributing)
 
 ## Overview
 
 This project demonstrates an Angular single-page application (SPA) calling C# .NET Core web API secured with [Azure AD B2C](https://docs.microsoft.com/azure/active-directory-b2c/overview) using the [Microsoft Authentication Library for Angular](https://github.com/AzureAD/microsoft-authentication-library-for-js/tree/dev/lib/msal-angular) (MSAL Angular) for the SPA and the [Microsoft.Identity.Web](https://github.com/AzureAD/microsoft-identity-web) (M.I.W) for the web API.  
+
 API layer works with Azure blob files and calls Micrsoft Graph for Azure AD B2C user account managment.  
 
-We will walkthrough the steps to have the project up and running.
+We will walkthrough the steps to get the project up and running.
 
 ## Architecture Design
 
@@ -39,12 +39,12 @@ We will walkthrough the steps to have the project up and running.
 
 - An **Azure AD B2C** tenant. For more information see: [How to get an Azure AD B2C tenant](https://docs.microsoft.com/azure/active-directory-b2c/tutorial-create-tenant)  
 - An **Azure AD** tenant and **Azure subscriptoin**  
-- API key pair from google reCAPTCHA v2. For more information see: [Sign up for an API key pair](http://www.google.com/recaptcha/admin)  
-- Google application. For more information see: [Create Google application](https://docs.microsoft.com/en-us/azure/active-directory-b2c/identity-provider-google?pivots=b2c-user-flow#create-a-google-application)  
-- Github application. For more information see: [Create a GitHub OAuth application](https://docs.microsoft.com/en-us/azure/active-directory-b2c/identity-provider-github?pivots=b2c-user-flow#create-a-github-oauth-application)  
-- Amazon app. For more information see: [Create an app in the Amazon developer console](https://docs.microsoft.com/en-us/azure/active-directory-b2c/identity-provider-amazon?pivots=b2c-user-flow#create-an-app-in-the-amazon-developer-console)  
-- Facebook application. For more information see: [Create a Facebook application](https://docs.microsoft.com/en-us/azure/active-directory-b2c/identity-provider-facebook?pivots=b2c-user-flow#create-a-facebook-application)  
-- App regirstration in your Azure AD tenant. For more information see: [Create a Microsoft account application](https://docs.microsoft.com/en-us/azure/active-directory-b2c/identity-provider-microsoft-account?pivots=b2c-user-flow#create-a-microsoft-account-application) - 
+- An **API key pair** from google reCAPTCHA v2. For more information see: [Sign up for an API key pair](http://www.google.com/recaptcha/admin)  
+- A **Google application**. For more information see: [Create Google application](https://docs.microsoft.com/en-us/azure/active-directory-b2c/identity-provider-google?pivots=b2c-user-flow#create-a-google-application)  
+- A **Github application**. For more information see: [Create a GitHub OAuth application](https://docs.microsoft.com/en-us/azure/active-directory-b2c/identity-provider-github?pivots=b2c-user-flow#create-a-github-oauth-application)  
+- A **Amazon app**. For more information see: [Create an app in the Amazon developer console](https://docs.microsoft.com/en-us/azure/active-directory-b2c/identity-provider-amazon?pivots=b2c-user-flow#create-an-app-in-the-amazon-developer-console)  
+- A **Facebook application**. For more information see: [Create a Facebook application](https://docs.microsoft.com/en-us/azure/active-directory-b2c/identity-provider-facebook?pivots=b2c-user-flow#create-a-facebook-application)  
+- An **App regirstration** in your Azure AD tenant. For more information see: [Create a Microsoft account application](https://docs.microsoft.com/en-us/azure/active-directory-b2c/identity-provider-microsoft-account?pivots=b2c-user-flow#create-a-microsoft-account-application) - 
 
 
 ## Setup
@@ -63,7 +63,7 @@ or download and extract the repository .zip file.
 
 ```console
     cd identity-for-all
-    cd API
+    cd B2c/API
     dotnet restore
 ```
 
@@ -80,11 +80,11 @@ For more information and potential issues, see: [HTTPS in .NET Core](https://doc
 
 ```console
     cd ../
-    cd SPA
+    cd B2C/SPA
     npm install
 ```
 
-### Step 6. Create storage account to host document and photos  
+### Step 5. Create storage account to host document and photos  
 - Create Azure storage account and container, for more information see: [Create storage account](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&tabs=azure-portal)  
 - Disable public access, for more information see: [Disable public access](https://docs.microsoft.com/en-us/azure/storage/common/shared-key-authorization-prevent?tabs=portal#remediate-authorization-via-shared-key)  
 - Disable storage account access key, for more information see: [Disable storage account access key](https://docs.microsoft.com/en-us/azure/storage/blobs/anonymous-read-access-configure?tabs=portal#allow-or-disallow-public-read-access-for-a-storage-account)    
@@ -110,7 +110,7 @@ Please refer to: [Tutorial: Create user flows in Azure Active Directory B2C](htt
 
 Please refer to: [Tutorial: Add identity providers to your applications in Azure Active Directory B2C](https://docs.microsoft.com/azure/active-directory-b2c/tutorial-add-identity-providers)
 
-### Register the service app (msal-dotnet-api and ConfClientGraph)  
+### Register the Service App (msal-dotnet-api and ConfClientGraph)  
 #### msal-dotnet-api  
 
 1. Navigate to the [Azure portal](https://portal.azure.com) and select the **Azure AD B2C** service.
@@ -141,7 +141,7 @@ The first thing that we need to do is to declare the unique [resource](https://d
 Create a single tenant app registration in Azure B2C tananet for the API to call Microsoft graph API, so that we can list user profile or delete user.  
 For more infomration see: [Register Management Application](https://docs.microsoft.com/en-us/azure/active-directory-b2c/microsoft-graph-get-started?tabs=app-reg-ga#register-management-application), it needs graph API  User.ReadWrite.All permission.  
 
-#### Configure the service app (msal-dotnet-api) to use your app registration
+#### Configure the Service App (msal-dotnet-api) to Use Your App Registration
 
 Open the project in your IDE (like Visual Studio or Visual Studio Code) to configure the code.
 
@@ -166,7 +166,7 @@ Open the project in your IDE (like Visual Studio or Visual Studio Code) to confi
 1. Find the key `AzureAd:ClientId` and replace its value with the application ID(clientId) of `ConfClientGrap`.    
 1. Find the key `AzureAd:ClientId` and replace its value with the secret of app registration `ConfClientGrap`.  
 
-### Register the client app (msal-angular-spa)
+### Register the Client App (msal-angular-spa)
 
 1. Navigate to the [Azure portal](https://portal.azure.com) and select the **Azure AD B2C** service.
 1. Select the **App Registrations** blade on the left, then select **New registration**.
@@ -185,7 +185,7 @@ Open the project in your IDE (like Visual Studio or Visual Studio Code) to confi
    - Select the **Add permissions** button at the bottom.
    - Finally, click on the **Grant admin consent** button at the top.
 
-#### Configure the client app (msal-angular-spa) to use your app registration
+#### Configure the Client app (msal-angular-spa) to Use Your App Registration
 
 Open the project in your IDE (like Visual Studio or Visual Studio Code) to configure the code.
 
@@ -227,14 +227,14 @@ To setup your B2C user-flows, do the following:
 Using a command line interface such as VS Code integrated terminal, locate the application directory. Then:  
 
 ```console
-    cd SPA
+    cd B2C/SPA
     npm start
 ```
 
 In a separate console window, execute the following commands:
 
 ```console
-    cd API
+    cd B2C/API
     dotnet run
 ```
 
@@ -243,6 +243,8 @@ In a separate console window, execute the following commands:
 1. Open your browser and navigate to `http://localhost:4200`.
 2. Sign-in using the button on the top-left corner.
 3. Select the **List Azure Blob** button on the navigation bar to access shared document or photos.
+4. Select the **Show Profile** or **Edit Profile** button on the navigation bar to work with user profile.  
+5. Select the **Close Account** button on the navigation bar if you need to delete user account.  
 
 > :information_source: Did the sample not work for you as expected? Then please reach out to us using the [GitHub Issues](../../../../issues) page.
 
