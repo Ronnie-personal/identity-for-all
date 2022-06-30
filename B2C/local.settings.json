@@ -1,0 +1,11 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "need update",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "BASIC_AUTH_USERNAME": "need update",
+    "BASIC_AUTH_PASSWORD": "need udpate",
+    "CAPTCHA_SECRET_KEY": "need update",
+    "B2C_EXTENSIONS_APP_ID": "need update"
+  }
+}
