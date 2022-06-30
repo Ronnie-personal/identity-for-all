@@ -3,7 +3,7 @@ Identity for all hackathon is a great event, it inspires me to learn more and go
 
 Here is the hypothetical use case, individuals who are outside of your organization need to do file collaboration with you. For example, download document or photos through user friendly web UI.
 
-The file sharing must be secured with authentication and authorization and can not be anonymous. The capability should be highly scalable and customizable with either local account or federation with user’s existing social identity.
+The file sharing must be secured with authentication and authorization and can not be anonymous access. The capability should be highly scalable and customizable with either local account or federation with user’s existing social identity.
 ## What it does
 Secured file collaboration with external user using Azure AD B2C, Microsoft Graph and managed identity, running in Azure cloud, highly scalable and customizable.
 - Sign-in, Sign-up or Editing Profile through Azure AD B2C
