@@ -1,6 +1,8 @@
 
 # File Collaboration and Microsoft Idenity Platform Project
 
+> :Info: This project is live now, when you try it out, it will take a little time to load up, since the free tier Azure app service is NOT always on.
+
  1. [Overview](#overview)
  1. [Architecture Design](#architecture-design)
  1. [Contents](#contents)
@@ -63,7 +65,7 @@ or download and extract the repository .zip file.
 
 ```console
     cd identity-for-all
-    cd B2c/API
+    cd B2C/API
     dotnet restore
 ```
 
@@ -90,7 +92,7 @@ For more information and potential issues, see: [HTTPS in .NET Core](https://doc
 - Disable storage account access key, for more information see: [Disable storage account access key](https://docs.microsoft.com/en-us/azure/storage/blobs/anonymous-read-access-configure?tabs=portal#allow-or-disallow-public-read-access-for-a-storage-account)    
 - Grant RBAC permission to your API/Azure app service managed identity
 ```
-New-AzRoleAssignment -RoleDefinitionName "Storage Blob Data Reader" -ObjectId <your user account OID> -Scope <Resource ID>
+New-AzRoleAssignment -RoleDefinitionName "Storage Blob Data Reader" -ObjectId <Managed Identity OID> -Scope <Resource ID>
 ```
 
 ## Registration
@@ -127,19 +129,19 @@ The first thing that we need to do is to declare the unique [resource](https://d
    - For this sample, use this URI (`https://{tenantName}.onmicrosoft.com/fcollab`) by selecting **Save**.
 1. All APIs have to publish a minimum of one [scope](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow#request-an-authorization-code) for the client's to obtain an access token successfully. To publish a scope, follow the following steps:
    - Select **Add a scope** button open the **Add a scope** screen and Enter the values as indicated below:
-        - For **Scope name**, use `red`.
+        - For **Scope name**, use `read`.
         - For **Admin consent display name** type `Access msal-dotnet-api`.
         - For **Admin consent description** type `Allows the app to access msal-dotnet-api as the signed-in user.`
         - Keep **State** as **Enabled**.
         - Select the **Add scope** button on the bottom to save this scope.
-1. Add three more scopes: write, profile.read and profile.delete  
+1. Add three more scopes: `write`, `profile.read` and `profile.delete`.  
 1. On the right side menu, select the `Manifest` blade.
    - Set `accessTokenAcceptedVersion` property to **2**.
    - Click on **Save**.
 
 #### ConfClientGraph
 Create a single tenant app registration in Azure B2C tananet for the API to call Microsoft graph API, so that we can list user profile or delete user.  
-For more infomration see: [Register Management Application](https://docs.microsoft.com/en-us/azure/active-directory-b2c/microsoft-graph-get-started?tabs=app-reg-ga#register-management-application), it needs graph API  User.ReadWrite.All permission.  
+For more infomration see: [Register Management Application](https://docs.microsoft.com/en-us/azure/active-directory-b2c/microsoft-graph-get-started?tabs=app-reg-ga#register-management-application), it needs graph API `User.ReadWrite.All` permission.  
 
 #### Configure the Service App (msal-dotnet-api) to Use Your App Registration
 
@@ -164,7 +166,7 @@ Open the project in your IDE (like Visual Studio or Visual Studio Code) to confi
 1. Find the key `AzureAd:Domain` and replace value with your Azure AD B2C domain name.
 1. Find the key `AzureAd:TenantId` and replace its value with your Azure AD B2C tenant id.  
 1. Find the key `AzureAd:ClientId` and replace its value with the application ID(clientId) of `ConfClientGrap`.    
-1. Find the key `AzureAd:ClientId` and replace its value with the secret of app registration `ConfClientGrap`.  
+1. Find the key `AzureAd:ClientSecret` and replace its value with the secret of app registration `ConfClientGrap`.  
 
 ### Register the Client App (msal-angular-spa)
 
