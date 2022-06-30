@@ -1,5 +1,5 @@
 ## Inspiration
-Identity for all hackathon is a great event, it inspires me to learn and go to next level.
+Identity for all hackathon is a great event, it inspires me to learn more and go to next level.
 
 Here is the hypothetical use case, individuals who are outside of your organization need to do file collaboration with you. For example, download document or photos through user friendly web UI.
 
@@ -47,7 +47,7 @@ https://cloudjourney.medium.com/file-collaboration-4ef397f3f176
 - I also have doubt when I work on Azure AD B2C user management through Microsoft graph API, MS consultant pointed out a git hub sample code, which is exactly what I was looking for.
 
 ## Accomplishments that we're proud of
-- I have better understanding of MS identity platform
+- I get better understanding of MS identity platform
 - I can call myself full stack developer again after this project  
 - Host the capability in Azure cloud with appropriate network and IAM security control
 
