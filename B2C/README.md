@@ -8,8 +8,8 @@
  1. [Setup](#setup)
  1. [Registration](#registration)
  1. [Captcha Integration and Custom Page Layout](#captcha-integration-and-custom-page-layout)  
- 1. [Running the sample](#running-the-sample)
- 1. [Explore the sample](#explore-the-sample)
+ 1. [Running the Project](#running-the-sample)
+ 1. [Explore the Project](#explore-the-sample)
  1. [About the code](#about-the-code)
  1. [More information](#more-information)
 
@@ -137,7 +137,7 @@ The first thing that we need to do is to declare the unique [resource](https://d
    - Set `accessTokenAcceptedVersion` property to **2**.
    - Click on **Save**.
 
-#### ConfClientGraph
+#### Registartion for Graph API Call (ConfClientGraph)
 Create a single tenant app registration in Azure B2C tananet for the API to call Microsoft graph API, so that we can list user profile or delete user.  
 For more infomration see: [Register Management Application](https://docs.microsoft.com/en-us/azure/active-directory-b2c/microsoft-graph-get-started?tabs=app-reg-ga#register-management-application), it needs graph API `User.ReadWrite.All` permission.  
 
@@ -223,7 +223,7 @@ To setup your B2C user-flows, do the following:
 
   For more information see: [deployment](https://github.com/Azure-Samples/active-directory-b2c-node-sign-up-user-flow-captcha).  
 
-## Running the sample
+## Running the Project
 
 Using a command line interface such as VS Code integrated terminal, locate the application directory. Then:  
 
@@ -239,7 +239,7 @@ In a separate console window, execute the following commands:
     dotnet run
 ```
 
-## Explore the sample
+## Explore the Project
 
 1. Open your browser and navigate to `http://localhost:4200`.
 2. Sign-in using the button on the top-left corner.
@@ -247,7 +247,7 @@ In a separate console window, execute the following commands:
 4. Select the **Show Profile** or **Edit Profile** button on the navigation bar to work with user profile.  
 5. Select the **Close Account** button on the navigation bar if you need to delete your user account.  
 
-## About the code
+## About the Code
 
 ### Access token validation
 
@@ -263,7 +263,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAdB2C"));
 ```
 
-In your controller, add [Authorize] decorator, which will make sure all incoming requests have an authentication bearer:
+In your controller, add [Authorize] decorator, which will make sure all incoming requests have an authentication bearer.  
+> To authenticate to Azure services usning managed identity, simply call `new DefaultAzureCredential()`. For more information see: [authenticate](https://docs.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line)  
 
 ```csharp
 [Authorize]
@@ -296,6 +297,34 @@ public class MyBlobFileController : ControllerBase
         }
         return list.ToArray();
     }
+```
+
+### Graph API Client  
+Create `graphServiceClient` using `clientSecretCredential` and `scopes`. Scope `default` means containing all the permissions which are defined on the app registration.
+```csharp
+{
+    [Authorize]
+    [ApiController]
+    [Route("[controller]")]
+    [RequiredScope(RequiredScopesConfigurationKey = "AzureAdB2C:ProfileScopes")]
+    public class MyProfileController : ControllerBase
+    {
+        private readonly ILogger<MyProfileController> _logger;
+        private readonly IConfiguration _configuration;
+        private ConfidentialClientApplicationOptions _applicationOptions;
+        private GraphServiceClient graphClient;
+
+        public MyProfileController(ILogger<MyProfileController> logger, IConfiguration configuration)
+        {
+            _logger = logger;
+            _configuration = configuration;
+            _applicationOptions = new ConfidentialClientApplicationOptions();
+            configuration.Bind("AzureAD", _applicationOptions);
+            var scopes = new[] { "https://graph.microsoft.com/.default" };
+            var clientSecretCredential = new ClientSecretCredential(_configuration.GetValue<string>("AzureAD:TenantId"), _configuration.GetValue<string>("AzureAD:ClientId"), _configuration.GetValue<string>("AzureAD:ClientSecret"));
+            graphClient = new GraphServiceClient(clientSecretCredential, scopes);
+        }
+
 ```
 
 ### CORS configuration
