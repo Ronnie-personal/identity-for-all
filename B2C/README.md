@@ -1,8 +1,6 @@
 
 # File Collaboration and Microsoft Idenity Platform Project
 
-> :Info: This project is live now, when you try it out, it will take a little time to load up, since the free tier Azure app service is NOT always on.
-
  1. [Overview](#overview)
  1. [Architecture Design](#architecture-design)
  1. [Contents](#contents)
@@ -46,7 +44,7 @@ We will walkthrough the steps to get the project up and running.
 - A **Github application**. For more information see: [Create a GitHub OAuth application](https://docs.microsoft.com/en-us/azure/active-directory-b2c/identity-provider-github?pivots=b2c-user-flow#create-a-github-oauth-application)  
 - A **Amazon app**. For more information see: [Create an app in the Amazon developer console](https://docs.microsoft.com/en-us/azure/active-directory-b2c/identity-provider-amazon?pivots=b2c-user-flow#create-an-app-in-the-amazon-developer-console)  
 - A **Facebook application**. For more information see: [Create a Facebook application](https://docs.microsoft.com/en-us/azure/active-directory-b2c/identity-provider-facebook?pivots=b2c-user-flow#create-a-facebook-application)  
-- An **App regirstration** in your Azure AD tenant. For more information see: [Create a Microsoft account application](https://docs.microsoft.com/en-us/azure/active-directory-b2c/identity-provider-microsoft-account?pivots=b2c-user-flow#create-a-microsoft-account-application) - 
+- An **App regirstration** in your Azure AD tenant. For more information see: [Create a Microsoft account application](https://docs.microsoft.com/en-us/azure/active-directory-b2c/identity-provider-microsoft-account?pivots=b2c-user-flow#create-a-microsoft-account-application)   
 
 
 ## Setup
@@ -175,7 +173,7 @@ Open the project in your IDE (like Visual Studio or Visual Studio Code) to confi
 1. In the **Register an application page** that appears, enter your application's registration information:
    - In the **Name** section, enter a meaningful application name that will be displayed to users of the app, for example `msal-angular-spa`.
    - Under **Supported account types**, select **Accounts in any identity provider or organizational directory (for authenticating users with user flows)**.
-   - In the **Redirect URI (optional)** section, select **Single-page application** in the combo-box and enter the following redirect URI: `http://localhost:4200/`.
+   - In the **Redirect URI (optional)** section, select **Single-page application** in the combo-box and enter the following redirect URI: `http://localhost:4200`.
 1. Select **Register** to create the application.
 1. In the app's registration screen, find and note the **Application (client) ID**. You use this value in your app's configuration file(s) later in your code.
 1. Select **Save** to save your changes.
@@ -207,7 +205,7 @@ To setup your B2C user-flows, do the following:
 1. Find the key `authorities.editProfile.authority` and populate it with your policy authority strings e.g. `https://<your-tenant-name>.b2clogin.com/<your-tenant-name>.onmicrosoft.com/b2c_1_editprofile`.  
 1. Find the key `authorityDomain` and populate it with the domain portion of your authority string e.g. `<your-tenant-name>.b2clogin.com`.
 
-## Captcha integration and custom page layout
+## Captcha Integration and Custom Page Layout
 
 1. Create Azure storage account to host custom page.  
 1. Deploy Azure function app to integrate with Azure AD B2C API connector, when run from local, add settings to local.settings.json, when run from Azure function app, use funcation app app settings.
@@ -221,6 +219,7 @@ To setup your B2C user-flows, do the following:
     - Select your signupsignin flow
     - In Overview page, select `Page layouts`  
     - Update `Custom page URI` for both Local account sign up page and Socail account sign up page with your custom page URL e.g `https://<storage acct>.blob.core.windows.net/<container>/selfAsserted.html`  
+1. Find the key `sitekey` from `selfAsserted2.html` and replace the value with your reCAPTCHA site key.
 
   For more information see: [deployment](https://github.com/Azure-Samples/active-directory-b2c-node-sign-up-user-flow-captcha).  
 
@@ -246,15 +245,7 @@ In a separate console window, execute the following commands:
 2. Sign-in using the button on the top-left corner.
 3. Select the **List Azure Blob** button on the navigation bar to access shared document or photos.
 4. Select the **Show Profile** or **Edit Profile** button on the navigation bar to work with user profile.  
-5. Select the **Close Account** button on the navigation bar if you need to delete user account.  
-
-> :information_source: Did the sample not work for you as expected? Then please reach out to us using the [GitHub Issues](../../../../issues) page.
-
-> :information_source: if you believe your issue is with the B2C service itself rather than with the sample, please file a support ticket with the B2C team by following the instructions [here](https://docs.microsoft.com/azure/active-directory-b2c/support-options).
-
-## We'd love your feedback!
-
-Were we successful in addressing your learning objective? Consider taking a moment to [share your experience with us](https://forms.office.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbR73pcsbpbxNJuZCMKN0lURpUOU5PNlM4MzRRV0lETkk2ODBPT0NBTEY5MCQlQCN0PWcu).
+5. Select the **Close Account** button on the navigation bar if you need to delete your user account.  
 
 ## About the code
 
