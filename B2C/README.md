@@ -42,7 +42,7 @@ We will walkthrough the steps to get the project up and running.
 - An **API key pair** from google reCAPTCHA v2. For more information see: [Sign up for an API key pair](http://www.google.com/recaptcha/admin)  
 - A **Google application**. For more information see: [Create Google application](https://docs.microsoft.com/en-us/azure/active-directory-b2c/identity-provider-google?pivots=b2c-user-flow#create-a-google-application)  
 - A **Github application**. For more information see: [Create a GitHub OAuth application](https://docs.microsoft.com/en-us/azure/active-directory-b2c/identity-provider-github?pivots=b2c-user-flow#create-a-github-oauth-application)  
-- A **Amazon app**. For more information see: [Create an app in the Amazon developer console](https://docs.microsoft.com/en-us/azure/active-directory-b2c/identity-provider-amazon?pivots=b2c-user-flow#create-an-app-in-the-amazon-developer-console)  
+- An **Amazon app**. For more information see: [Create an app in the Amazon developer console](https://docs.microsoft.com/en-us/azure/active-directory-b2c/identity-provider-amazon?pivots=b2c-user-flow#create-an-app-in-the-amazon-developer-console)  
 - A **Facebook application**. For more information see: [Create a Facebook application](https://docs.microsoft.com/en-us/azure/active-directory-b2c/identity-provider-facebook?pivots=b2c-user-flow#create-a-facebook-application)  
 - An **App regirstration** in your Azure AD tenant. For more information see: [Create a Microsoft account application](https://docs.microsoft.com/en-us/azure/active-directory-b2c/identity-provider-microsoft-account?pivots=b2c-user-flow#create-a-microsoft-account-application)   
 
@@ -264,7 +264,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 ```
 
 In your controller, add [Authorize] decorator, which will make sure all incoming requests have an authentication bearer.  
-> To authenticate to Azure services usning managed identity, simply call `new DefaultAzureCredential()`. For more information see: [authenticate](https://docs.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line)  
+:information_source: To authenticate to Azure services using managed identity, simply call `new DefaultAzureCredential()`. For more information see: [authenticate](https://docs.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line)  
 
 ```csharp
 [Authorize]
